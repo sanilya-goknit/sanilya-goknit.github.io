@@ -12,13 +12,13 @@ function App() {
   const [authRes, setAuthRes] = useState({});
 
   useEffect(() => {
-    Auth.currentSession()
-      .then((res) => {
-        setAuthRes(res);
-      })
-      .catch(() => {
-        navigate("login");
-      });
+    // Auth.currentSession()
+    //   .then((res) => {
+    //     setAuthRes(res);
+    //   })
+    //   .catch(() => {
+    //     navigate("login");
+    //   });
   }, []);
 
   const logout = () => {
