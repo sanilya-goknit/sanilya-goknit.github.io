@@ -13,7 +13,7 @@ const EditFrame = () => {
     setConfig({
       backgroundColor: "#FFFFFF",
       dimensions: { height: 1080, width: 1920 },
-      duration: 100,
+      duration: 10,
       layers: getVideos(),
     });
   }, []);
@@ -42,6 +42,7 @@ const EditFrame = () => {
             <div className={'h-50'}>
               {config && (
                 <Player
+
                   applicationId="6jx24gqZW7"
                   config={config}
                   loop={false}
@@ -49,7 +50,7 @@ const EditFrame = () => {
                     height: "100%",
                     width: "100%",
                   }}
-                  host={"https://embed.editframe.dev"}
+                  // host={"https://embed.editframe.dev"}
                   // seek={seek}
                   // loading={loading}
                 />

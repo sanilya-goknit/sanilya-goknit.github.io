@@ -1,33 +1,39 @@
-import logo from './logo.svg';
-import './App.scss';
-import {useState, useEffect} from 'react'
-import {Auth} from 'aws-amplify';
-import {useNavigate} from 'react-router-dom';
-import Grid from '@mui/material/Grid'
+import logo from "./logo.svg";
+import "./App.scss";
+import { useState, useEffect } from "react";
+import { Auth } from "aws-amplify";
+import { useNavigate } from "react-router-dom";
+import Grid from "@mui/material/Grid";
 import EditFrame from "./Components/EditFrame";
+import RemotionDemo from "./RemotionTest/RemotionDemo";
 
 function App() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [authRes, setAuthRes] = useState({});
 
   useEffect(() => {
-    Auth.currentSession().then(res => {
-      setAuthRes(res)
-    }).catch(() => {
-      navigate('login')
-    })
+    Auth.currentSession()
+      .then((res) => {
+        setAuthRes(res);
+      })
+      .catch(() => {
+        navigate("login");
+      });
   }, []);
 
   const logout = () => {
-    Auth.signOut().then(res => {
-      navigate('/login')
-    })
+    Auth.signOut().then((res) => {
+      navigate("/login");
+    });
   };
 
   return (
-    <div className="container pt-4">
-
-      <EditFrame />
+    <div className="">
+      <div className={"header"}></div>
+      {/* <EditFrame /> */}
+      <div className={"container pt-4"}>
+        <RemotionDemo />
+      </div>
     </div>
   );
 }
