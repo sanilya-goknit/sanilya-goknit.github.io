@@ -114,6 +114,4 @@ const RemotionDemo = () => {
   );
 };
 
-// registerRoot(RemotionDemo);
-
 export default RemotionDemo;

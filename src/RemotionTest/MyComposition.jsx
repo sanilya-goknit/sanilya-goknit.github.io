@@ -5,7 +5,6 @@ export const MyComposition = ({ videos }) => {
     <>
         {/*{console.log(videos)}*/}
       {videos?.map((item) => {
-          // console.log(item)
         return (
           <Sequence
             from={item.timeline.start * 30}
