@@ -18,18 +18,41 @@ const list = [
       "https://d3mer4pbzhq4ts.cloudfront.net/public/knit/project/62909c5ccd3c7400090c0cfa/survey/R_6m4xA8xY3QicKbf/F_1n79Gnl5nvZhLyQ.MOV",
     media_type: "VIDEO",
   },
+  // {
+  //   _id: {
+  //     $oid: "63f3155338ab3c56e49d7100",
+  //   },
+  //   media_type: "IMAGE",
+  //   slide_title: "Title Text",
+  //   slide_subtitle: "This is subheader text",
+  //   slide_duration: 8,
+  //   slide_thumbnail_url:
+  //     "https://s3.amazonaws.com/com.knit.dev/public/knit/static/showreel_templates/default_showreels_template.jpg",
+  //   slide_logo_url:
+  //     "https://s3.amazonaws.com/com.knit.dev/public/knit/showreel_media/slides/permanent/62909c5ccd3c7400090c0cfa/63217152f10f748fc82281aa/63f3155338ab3c56e49d7100/slide.jpg",
+  // },
   {
     _id: {
-      $oid: "63f3155338ab3c56e49d7100",
+      $oid: "6321715f3a4483b168cd4626XXX",
     },
     media_type: "SLIDE",
-    slide_title: "Title Text",
-    slide_subtitle: "This is subheader text",
-    slide_duration: 8,
-    slide_thumbnail_url:
-      "https://s3.amazonaws.com/com.knit.dev/public/knit/static/showreel_templates/default_showreels_template.jpg",
-    slide_logo_url:
-      "https://s3.amazonaws.com/com.knit.dev/public/knit/showreel_media/slides/permanent/62909c5ccd3c7400090c0cfa/63217152f10f748fc82281aa/63f3155338ab3c56e49d7100/slide.jpg",
+    title: "Slide Title",
+    subTitle: "Slide sub title text",
+    titleFontOption: {
+      fontSize: 42,
+      color: "red",
+      fontWeight: 600,
+      fontStyle: "italic",
+    },
+    subTitleFontOption: {
+      fontSize: 42,
+      color: "red",
+      fontWeight: 600,
+      fontStyle: "italic",
+    },
+    logo: "https://goknitwebsite.wpenginepowered.com/wp-content/uploads/2023/02/Knit-Logo-Full-Green.png",
+    backgroundColor: "#FFAA00",
+    original_video_duration: 5,
   },
   {
     _id: {
@@ -132,7 +155,7 @@ export function getVideos() {
   let totalDuration = 0;
   let videos = [];
   list
-    .filter((item) => item.video_highlights_link && item)
+    // .filter((item) => item.video_highlights_link && item)
     .forEach((item, index) => {
       totalDuration = totalDuration + item.original_video_duration;
       videos.push({
@@ -141,6 +164,12 @@ export function getVideos() {
         source: item.video_highlights_link,
         thumbnail: item.video_thumbnail_url,
         image: item.slide_logo_url,
+        title: item.title,
+        subTitle: item.subTitle,
+        titleFontOption: item.titleFontOption,
+        subTitleFontOption: item.subTitleFontOption,
+        backgroundColor: item.backgroundColor,
+        logo: item.logo,
         audio: {
           volume: 1,
         },
@@ -159,7 +188,7 @@ export function getVideos() {
           scale: 1,
           width: null,
         },
-        duration: item.original_video_duration || 1,
+        duration: item.original_video_duration || item.slide_duration || 1,
         timeline: {
           start:
             index == 0
@@ -167,7 +196,7 @@ export function getVideos() {
               : videos[index - 1].timeline.start + videos[index - 1].duration,
           end:
             index == 0
-              ? item.duration
+              ? item.original_video_duration || item.slide_duration
               : videos[index - 1].timeline.start +
                 videos[index - 1].duration +
                 item.duration,
@@ -175,10 +204,75 @@ export function getVideos() {
         transitions: [],
         trim: {
           start: 0,
-          end: item.original_video_duration,
-          duration: item.original_video_duration,
+          end: item.original_video_duration || item.slide_duration,
+          duration: item.original_video_duration || item.slide_duration,
         },
       });
     });
   return videos;
+}
+
+function getMusics() {
+  return [
+    {
+      music_title: "Chill Abstract Intention",
+      music_url:
+        "https://s3.amazonaws.com/com.knit.dev/public/knit/showreel_media/audio/Chill_Abstract_Intention.mp3",
+      music_duration: 88.03,
+    },
+    {
+      music_title: "Faithful Mission",
+      music_url:
+        "https://s3.amazonaws.com/com.knit.dev/public/knit/showreel_media/audio/Faithful_Mission.mp3",
+      music_duration: 152.48,
+    },
+    {
+      music_title: "Happy Day",
+      music_url:
+        "https://s3.amazonaws.com/com.knit.dev/public/knit/showreel_media/audio/Happy_Day.mp3",
+      music_duration: 170.03,
+    },
+    {
+      music_title: "Inspiring Atmosphere",
+      music_url:
+        "https://s3.amazonaws.com/com.knit.dev/public/knit/showreel_media/audio/Inspiring_Atmosphere.mp3",
+      music_duration: 248.08,
+    },
+    {
+      music_title: "Motivation Corporate",
+      music_url:
+        "https://s3.amazonaws.com/com.knit.dev/public/knit/showreel_media/audio/Motivation_Corporate.mp3",
+      music_duration: 123.17,
+    },
+    {
+      music_title: "Mountain Path",
+      music_url:
+        "https://s3.amazonaws.com/com.knit.dev/public/knit/showreel_media/audio/Mountain_Path.mp3",
+      music_duration: 208.9,
+    },
+    {
+      music_title: "Nature Walk",
+      music_url:
+        "https://s3.amazonaws.com/com.knit.dev/public/knit/showreel_media/audio/Nature_Walk.mp3",
+      music_duration: 324.44,
+    },
+    {
+      music_title: "Pathway Home",
+      music_url:
+        "https://s3.amazonaws.com/com.knit.dev/public/knit/showreel_media/audio/Pathway_Home.mp3",
+      music_duration: 261.28,
+    },
+    {
+      music_title: "The Beat Of Nature",
+      music_url:
+        "https://s3.amazonaws.com/com.knit.dev/public/knit/showreel_media/audio/The_Beat_Of_Nature.mp3",
+      music_duration: 173.19,
+    },
+    {
+      music_title: "This is your time",
+      music_url:
+        "https://s3.amazonaws.com/com.knit.dev/public/knit/showreel_media/audio/This_is_your_time.mp3",
+      music_duration: 108.03999999999999,
+    },
+  ];
 }

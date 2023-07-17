@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import EditFrame from "./Components/EditFrame";
 import RemotionDemo from "./RemotionTest/RemotionDemo";
+import EtroDemo from "./EtroTest/EtroDemo";
 
 function App() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ function App() {
     <div className="">
       <div className={"header"}></div>
       {/* <EditFrame /> */}
-      <div className={"container pt-4"}>
+      <div className={"container-fluid pt-4"}>
         <RemotionDemo />
       </div>
     </div>

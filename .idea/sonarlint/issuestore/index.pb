@@ -24,3 +24,5 @@ R
 "src/RemotionTest/MyComposition.jsx,a/a/aa56ec334fb76cf9ef7c45bfd97e55acc74d9f88
 Q
 !src/RemotionTest/RemotionDemo.jsx,8/d/8dfacc882c1ccc885f9784f4d1b1b0a2c4a33b55
+I
+src/EtroTest/EtroDemo.jsx,c/6/c6bcc13f4811c7684b5f7919328fbeaa4d9264d5
