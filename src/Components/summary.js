@@ -1,4 +1,4 @@
-const a = [
+export const summaryA = [
     {
         "type": "text",
         "value": "My",
@@ -1773,7 +1773,7 @@ const a = [
         "unique_element_key": 328681848738
     }
 ];
-const b = [
+export const summaryB = [
     {
         "type": "text",
         "value": "I",

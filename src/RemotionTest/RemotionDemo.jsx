@@ -10,6 +10,7 @@ import axios from "axios";
 
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import {CircularProgress} from "@mui/material";
 
 const fonts = [
   { title: "Roboto", key: 1, value: "Roboto" },
@@ -39,7 +40,8 @@ const RemotionDemo = () => {
   const [justify, setJustify] = useState("center");
   const [fontColor, setFontColor] = useState("#FFFFFF");
   const [fontStyle, setFontStyle] = useState({});
-  const [fontSize, setFontSize] = useState(10);
+  const [fontSize, setFontSize] = useState(22);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setVideoConfig(getVideos());
@@ -47,6 +49,7 @@ const RemotionDemo = () => {
   }, []);
 
   const renderVideo = async () => {
+    setIsLoading(true)
     axios
       .post("http://localhost:3002/api/render", {
         videoConfig: videoConfig,
@@ -58,7 +61,9 @@ const RemotionDemo = () => {
         fontSize: fontSize,
       })
       .then((response) => {
+        setIsLoading(false)
         console.log(response);
+        window.open(response.data.data.video)
       });
 
     // const compositionId = "HelloWorld";
@@ -89,7 +94,7 @@ const RemotionDemo = () => {
               (
                 videoConfigTemp[index - 1].timeline.start +
                 videoConfigTemp[index - 1].trim.duration
-              ).toFixed(2)
+              ).toFixed(2),
             );
       item.timeline.end =
         index == 0
@@ -99,14 +104,15 @@ const RemotionDemo = () => {
                 videoConfigTemp[index - 1].timeline.start +
                 videoConfigTemp[index - 1].trim.duration +
                 item.trim.duration
-              ).toFixed(2)
+              ).toFixed(2),
             );
     });
     console.log("CONFIG :: ", videoConfigTemp);
     setVideoConfigTemp([...videoConfigTemp]);
   };
 
-  const updateDuration = (duration, index) => {
+  const updateDuration = (event, index) => {
+    const duration = Number(event.target.value || 5);
     console.log("CHANGE ", duration, index);
     // const start = Number(v.start);
     // const end = Number(v.end);
@@ -121,7 +127,7 @@ const RemotionDemo = () => {
               (
                 videoConfigTemp[index - 1].timeline.start +
                 videoConfigTemp[index - 1].trim.duration
-              ).toFixed(2)
+              )?.toFixed(2),
             );
       item.timeline.end =
         index == 0
@@ -131,7 +137,7 @@ const RemotionDemo = () => {
                 videoConfigTemp[index - 1].timeline.start +
                 videoConfigTemp[index - 1].trim.duration +
                 item.trim.duration
-              ).toFixed(2)
+              )?.toFixed(2),
             );
     });
     console.log("CONFIG :: ", videoConfigTemp);
@@ -153,7 +159,7 @@ const RemotionDemo = () => {
   };
 
   const updateChanges = () => {
-    setVideoConfig([...videoConfigTemp]);
+    setVideoConfig([...JSON.parse(JSON.stringify([...videoConfigTemp]))]);
     console.log(videoConfigTemp);
   };
 
@@ -205,7 +211,7 @@ const RemotionDemo = () => {
 
   return (
     <Grid container>
-      {console.log(range)}
+      {/*{console.log(range)}*/}
       <Grid item md={3}>
         {videoConfigTemp &&
           videoConfigTemp.map((item, index) => {
@@ -214,7 +220,7 @@ const RemotionDemo = () => {
                 <div className={"mb-5 border-bottom-1 d-flex"}>
                   <div className={"me-2"}>
                     {item.type === "SLIDE" ? (
-                      <>SLIDE</>
+                      <>HTML JSX</>
                     ) : (
                       <img
                         src={item.thumbnail}
@@ -225,7 +231,7 @@ const RemotionDemo = () => {
                   </div>
                   <div className={"ml-1"}>
                     <div>
-                      Duration: {item.duration}, trim: {item.trim.duration}
+                      Duration: {item.duration}, trim: {item.trim.duration}, subtitles: {item.summary ? 'Yes' : 'No'}
                     </div>
                     <Box sx={{ width: 280 }} className={"d-flex w-50"}>
                       {/*<Slider*/}
@@ -243,6 +249,7 @@ const RemotionDemo = () => {
                       {item.type === "SLIDE" ? (
                         <>
                           <input
+                            type={"number"}
                             style={{ width: "100px" }}
                             onChange={(event) => updateDuration(event, index)}
                           />
@@ -366,6 +373,7 @@ const RemotionDemo = () => {
         <div className={"mt-3"}>
           Font Size:{" "}
           <input
+              value={fontSize}
             type={"number"}
             max={48}
             onChange={(e) => {
@@ -381,8 +389,9 @@ const RemotionDemo = () => {
             <Player
               ref={playerRef}
               durationInFrames={getDurationInFrames()}
-              compositionWidth={852}
-              compositionHeight={480}
+              compositionWidth={1280}
+              compositionHeight={720}
+              className={"player"}
               fps={30}
               component={() => (
                 <MyComposition
@@ -396,12 +405,16 @@ const RemotionDemo = () => {
                 />
               )}
               controls
-              width={1280}
-              height={720}
-
+              // width={1280}
+              // height={400}
               // Many other optional props are available.
             />
           )}
+        </div>
+        <div className={'mt-5'}>
+          {isLoading && <>
+            <CircularProgress /> <span className={"ms-3"}> rendering video</span>
+          </>}
         </div>
       </Grid>
     </Grid>

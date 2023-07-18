@@ -1,3 +1,5 @@
+import {summaryA, summaryB} from "./summary";
+
 const list = [
   {
     _id: {
@@ -6,6 +8,7 @@ const list = [
     knit_video_responses_id: {
       $oid: "62909cb2ebf2ca00090d6b36",
     },
+    summary: summaryA,
     video_feature_title:
       "In general, what is your favorite streaming platform? (Can be TV/shows/movies/music/etc.) If you could change one thing about it, what would you change? Do you have any creative ideas to make the platform better? What do you wish it offered that it currently does not offer?",
     video_thumbnail_url:
@@ -61,6 +64,7 @@ const list = [
     knit_video_responses_id: {
       $oid: "62909cb19a11810009b3a905",
     },
+    summary: summaryB,
     video_feature_title:
       "In general, what is your favorite streaming platform? (Can be TV/shows/movies/music/etc.) If you could change one thing about it, what would you change? Do you have any creative ideas to make the platform better? What do you wish it offered that it currently does not offer?",
     video_thumbnail_url:
@@ -80,6 +84,7 @@ const list = [
     knit_video_responses_id: {
       $oid: "62909cb2a8e37a0009704210",
     },
+
     video_feature_title:
       "In general, what is your favorite streaming platform? (Can be TV/shows/movies/music/etc.) If you could change one thing about it, what would you change? Do you have any creative ideas to make the platform better? What do you wish it offered that it currently does not offer?",
     video_thumbnail_url:
@@ -170,6 +175,7 @@ export function getVideos() {
         subTitleFontOption: item.subTitleFontOption,
         backgroundColor: item.backgroundColor,
         logo: item.logo,
+        summary: item.summary,
         audio: {
           volume: 1,
         },

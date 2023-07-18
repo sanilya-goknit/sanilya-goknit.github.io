@@ -1,6 +1,9 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 @import "./font/fonts";
 
+#root {
+  overflow: hidden;
+}
 
 .player-main {
   //position: relative;
@@ -30,6 +33,9 @@
   width: 100% !important;
 }
 
+.player {
+  height: inherit !important;
+}
 
 .sub-title {
   position: absolute;
@@ -44,4 +50,10 @@
     width: fit-content;
     background: rgba(0, 0, 0, 0.51);
   }
+}
+
+.slide-logo {
+  position: absolute;
+  left: 10px;
+  top: 10px;
 }

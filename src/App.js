@@ -32,7 +32,7 @@ function App() {
     <div className="">
       <div className={"header"}></div>
       {/* <EditFrame /> */}
-      <div className={"container-fluid pt-4"}>
+      <div className={"container-fluid pt-4"} style={{overflow: "hidden"}}>
         <RemotionDemo />
       </div>
     </div>
