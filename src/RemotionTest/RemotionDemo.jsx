@@ -221,10 +221,14 @@ const RemotionDemo = () => {
                   <div className={"me-2"}>
                     {item.type === "SLIDE" ? (
                       <>HTML JSX</>
+                    ) : item.type === "IMAGE" ? (
+                        <>
+                          <img src={item.image} style={{ height: "50px", width: "50px" }} alt={'asd'} />
+                        </>
                     ) : (
                       <img
                         src={item.thumbnail}
-                        alt={"image"}
+                        alt={"imae"}
                         style={{ height: "50px", width: "50px" }}
                       />
                     )}
@@ -246,7 +250,7 @@ const RemotionDemo = () => {
                       {/*  max={item.duration}*/}
                       {/*  disableSwap={true}*/}
                       {/*/>*/}
-                      {item.type === "SLIDE" ? (
+                      {item.type === "SLIDE" || item.type === "IMAGE" ? (
                         <>
                           <input
                             type={"number"}

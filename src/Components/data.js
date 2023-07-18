@@ -21,19 +21,19 @@ const list = [
       "https://d3mer4pbzhq4ts.cloudfront.net/public/knit/project/62909c5ccd3c7400090c0cfa/survey/R_6m4xA8xY3QicKbf/F_1n79Gnl5nvZhLyQ.MOV",
     media_type: "VIDEO",
   },
-  // {
-  //   _id: {
-  //     $oid: "63f3155338ab3c56e49d7100",
-  //   },
-  //   media_type: "IMAGE",
-  //   slide_title: "Title Text",
-  //   slide_subtitle: "This is subheader text",
-  //   slide_duration: 8,
-  //   slide_thumbnail_url:
-  //     "https://s3.amazonaws.com/com.knit.dev/public/knit/static/showreel_templates/default_showreels_template.jpg",
-  //   slide_logo_url:
-  //     "https://s3.amazonaws.com/com.knit.dev/public/knit/showreel_media/slides/permanent/62909c5ccd3c7400090c0cfa/63217152f10f748fc82281aa/63f3155338ab3c56e49d7100/slide.jpg",
-  // },
+  {
+    _id: {
+      $oid: "63f3155338ab3c56e49d7100",
+    },
+    media_type: "IMAGE",
+    slide_title: "Title Text",
+    slide_subtitle: "This is subheader text",
+    slide_duration: 8,
+    slide_thumbnail_url:
+      "https://s3.amazonaws.com/com.knit.dev/public/knit/static/showreel_templates/default_showreels_template.jpg",
+    slide_logo_url:
+      "https://s3.amazonaws.com/com.knit.dev/public/knit/showreel_media/slides/permanent/62909c5ccd3c7400090c0cfa/63217152f10f748fc82281aa/63f3155338ab3c56e49d7100/slide.jpg",
+  },
   {
     _id: {
       $oid: "6321715f3a4483b168cd4626XXX",

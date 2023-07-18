@@ -165,9 +165,14 @@ export const MyComposition = ({
                     </div>
                   </AbsoluteFill>
                 </>
-              ) : (
-                <></>
-              )}
+              ) : item.type === "IMAGE" ? (
+                  <AbsoluteFill>
+                    <div
+                        className={"h-100 w-100 d-flex justify-content-center align-items-center"}>
+                      <img src={item.image} />
+                    </div>
+                  </AbsoluteFill>
+              ) : <></>}
             </Sequence>
           </>
         );
