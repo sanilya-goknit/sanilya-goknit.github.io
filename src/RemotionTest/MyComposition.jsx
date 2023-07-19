@@ -1,4 +1,4 @@
-import { AbsoluteFill, Sequence, Video, Img, Audio } from "remotion";
+import { AbsoluteFill, Sequence, Video, Img, Audio, Loop } from "remotion";
 import { Player } from "@remotion/player";
 import React from "react";
 
@@ -10,6 +10,7 @@ export const MyComposition = ({
   fontColor,
   fontStyle,
   fontSize,
+    totalDuration
 }) => {
   const renderSubTitle = (summary, start, end, index) => {
     let summTemp = summary;
@@ -177,30 +178,12 @@ export const MyComposition = ({
           </>
         );
       })}
+      <Loop durationInFrames={totalDuration}>
       <Audio
         src="https://s3.amazonaws.com/com.knit.dev/public/knit/showreel_media/audio/Chill_Abstract_Intention.mp3"
         volume={0.05}
       />
-      {/*<Sequence*/}
-      {/*  showInTimeline={true}*/}
-      {/*  from={1}*/}
-      {/*  durationInFrames={2000}*/}
-      {/*  layout={"absolute-fill"}*/}
-      {/*>*/}
-      {/*  <div*/}
-      {/*    className={"sub-title"}*/}
-      {/*    style={{*/}
-      {/*      fontFamily: font,*/}
-      {/*      alignItems: align,*/}
-      {/*      justifyContent: justify,*/}
-      {/*      color: fontColor,*/}
-      {/*      fontSize: `${fontSize}px`,*/}
-      {/*      ...fontStyle,*/}
-      {/*    }}*/}
-      {/*  >*/}
-      {/*    <div>Hello, this is test subtitle</div>*/}
-      {/*  </div>*/}
-      {/*</Sequence>*/}
+      </Loop>
       <span className={"logo-watermark"}>
         powered by
         <img

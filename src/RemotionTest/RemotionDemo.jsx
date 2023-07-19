@@ -10,7 +10,8 @@ import axios from "axios";
 
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import {CircularProgress} from "@mui/material";
+import { CircularProgress } from "@mui/material";
+import { useLambda } from "../hooks/useLambda";
 
 const fonts = [
   { title: "Roboto", key: 1, value: "Roboto" },
@@ -31,10 +32,10 @@ const fonts = [
 const RemotionDemo = () => {
   const list = getVideos();
   const playerRef = useRef();
-  const [videoConfig, setVideoConfig] = useState();
+  const [videoConfig, setVideoConfig] = useState([]);
   const [videoConfigTemp, setVideoConfigTemp] = useState();
   const [range, setRange] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(0);
+  const [durationInFrames, setDurationInFrames] = useState(300);
   const [font, setFont] = useState(fonts[0].value);
   const [align, setAlign] = useState("end");
   const [justify, setJustify] = useState("center");
@@ -42,29 +43,68 @@ const RemotionDemo = () => {
   const [fontStyle, setFontStyle] = useState({});
   const [fontSize, setFontSize] = useState(22);
   const [isLoading, setIsLoading] = useState(false);
+  // const [progress, setProgress] = useState()
+
+  const getDurationInFrames = (vc) => {
+    let duration = 0;
+    if (vc) {
+      vc.forEach((item) => {
+        if (item.trim) {
+          duration = duration + (item.trim.end - item.trim.start);
+        } else {
+          duration = duration + item.duration;
+        }
+      });
+    }
+    console.log('ccaaall')
+    setDurationInFrames(Math.ceil(duration * 30) || 1);
+  };
 
   useEffect(() => {
-    setVideoConfig(getVideos());
-    setVideoConfigTemp(getVideos());
+    getDurationInFrames(videoConfig);
+  }, [...videoConfig]);
+
+  const { renderMedia, progress, status, price, url, renderId } = useLambda(
+    "MyComp",
+    {
+      config: videoConfig,
+      font: font,
+      align: align,
+      justify: justify,
+      fontColor: fontColor,
+      fontStyle: fontStyle,
+      fontSize: fontSize,
+      duration: durationInFrames,
+    }
+  );
+
+  useEffect(() => {
+    setVideoConfig([...getVideos()]);
+    setVideoConfigTemp([...getVideos()]);
+      getDurationInFrames(getVideos());
   }, []);
 
   const renderVideo = async () => {
-    setIsLoading(true)
-    axios
-      .post("http://localhost:3002/api/render", {
-        videoConfig: videoConfig,
-        font: font,
-        align: align,
-        justify: justify,
-        fontColor: fontColor,
-        fontStyle: fontStyle,
-        fontSize: fontSize,
-      })
-      .then((response) => {
-        setIsLoading(false)
-        console.log(response);
-        window.open(response.data.data.video)
-      });
+    setIsLoading(true);
+    renderMedia().then((res) => {
+      console.log(res);
+    });
+    // axios
+    //   .post("http://localhost:3002/api/render", {
+    //     videoConfig: videoConfig,
+    //     font: font,
+    //     align: align,
+    //     justify: justify,
+    //     fontColor: fontColor,
+    //     fontStyle: fontStyle,
+    //     fontSize: fontSize,
+    //     duration: getDurationInFrames()
+    //   })
+    //   .then((response) => {
+    //     setIsLoading(false)
+    //     console.log(response);
+    //     // window.open(response.data.data.video)
+    //   });
 
     // const compositionId = "HelloWorld";
     //
@@ -94,7 +134,7 @@ const RemotionDemo = () => {
               (
                 videoConfigTemp[index - 1].timeline.start +
                 videoConfigTemp[index - 1].trim.duration
-              ).toFixed(2),
+              ).toFixed(2)
             );
       item.timeline.end =
         index == 0
@@ -104,7 +144,7 @@ const RemotionDemo = () => {
                 videoConfigTemp[index - 1].timeline.start +
                 videoConfigTemp[index - 1].trim.duration +
                 item.trim.duration
-              ).toFixed(2),
+              ).toFixed(2)
             );
     });
     console.log("CONFIG :: ", videoConfigTemp);
@@ -127,7 +167,7 @@ const RemotionDemo = () => {
               (
                 videoConfigTemp[index - 1].timeline.start +
                 videoConfigTemp[index - 1].trim.duration
-              )?.toFixed(2),
+              )?.toFixed(2)
             );
       item.timeline.end =
         index == 0
@@ -137,29 +177,17 @@ const RemotionDemo = () => {
                 videoConfigTemp[index - 1].timeline.start +
                 videoConfigTemp[index - 1].trim.duration +
                 item.trim.duration
-              )?.toFixed(2),
+              )?.toFixed(2)
             );
     });
     console.log("CONFIG :: ", videoConfigTemp);
     setVideoConfigTemp([...videoConfigTemp]);
   };
 
-  const getDurationInFrames = () => {
-    let duration = 0;
-    if (videoConfig) {
-      videoConfig.forEach((item) => {
-        if (item.trim) {
-          duration = duration + (item.trim.end - item.trim.start);
-        } else {
-          duration = duration + item.duration;
-        }
-      });
-    }
-    return Math.ceil(duration * 30) || 1;
-  };
-
   const updateChanges = () => {
-    setVideoConfig([...JSON.parse(JSON.stringify([...videoConfigTemp]))]);
+    const newVC = JSON.parse(JSON.stringify([...videoConfigTemp]));
+    setVideoConfig([...newVC]);
+    getDurationInFrames(newVC)
     console.log(videoConfigTemp);
   };
 
@@ -222,9 +250,13 @@ const RemotionDemo = () => {
                     {item.type === "SLIDE" ? (
                       <>HTML JSX</>
                     ) : item.type === "IMAGE" ? (
-                        <>
-                          <img src={item.image} style={{ height: "50px", width: "50px" }} alt={'asd'} />
-                        </>
+                      <>
+                        <img
+                          src={item.image}
+                          style={{ height: "50px", width: "50px" }}
+                          alt={"asd"}
+                        />
+                      </>
                     ) : (
                       <img
                         src={item.thumbnail}
@@ -235,7 +267,8 @@ const RemotionDemo = () => {
                   </div>
                   <div className={"ml-1"}>
                     <div>
-                      Duration: {item.duration}, trim: {item.trim.duration}, subtitles: {item.summary ? 'Yes' : 'No'}
+                      Duration: {item.duration}, trim: {item.trim.duration},
+                      subtitles: {item.summary ? "Yes" : "No"}
                     </div>
                     <Box sx={{ width: 280 }} className={"d-flex w-50"}>
                       {/*<Slider*/}
@@ -377,7 +410,7 @@ const RemotionDemo = () => {
         <div className={"mt-3"}>
           Font Size:{" "}
           <input
-              value={fontSize}
+            value={fontSize}
             type={"number"}
             max={48}
             onChange={(e) => {
@@ -392,13 +425,14 @@ const RemotionDemo = () => {
           {videoConfig && (
             <Player
               ref={playerRef}
-              durationInFrames={getDurationInFrames()}
+              durationInFrames={durationInFrames}
               compositionWidth={1280}
               compositionHeight={720}
               className={"player"}
               fps={30}
               component={() => (
                 <MyComposition
+                  totalDuration={durationInFrames}
                   videos={videoConfig}
                   font={font}
                   align={align}
@@ -415,10 +449,13 @@ const RemotionDemo = () => {
             />
           )}
         </div>
-        <div className={'mt-5'}>
-          {isLoading && <>
-            <CircularProgress /> <span className={"ms-3"}> rendering video</span>
-          </>}
+        <div className={"mt-5 d-flex align-items-center"}>
+          {progress && (
+            <>
+              <CircularProgress />{" "}
+              <span className={"ms-3"}> rendering video {progress * 100}%</span>
+            </>
+          )}
         </div>
       </Grid>
     </Grid>
