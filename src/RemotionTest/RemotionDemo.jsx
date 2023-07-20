@@ -45,6 +45,20 @@ const RemotionDemo = () => {
   const [isLoading, setIsLoading] = useState(false);
   // const [progress, setProgress] = useState()
 
+  const { renderMedia, progress, status, price, url, renderId } = useLambda(
+      "MyComp",
+      {
+        config: videoConfig,
+        font: font,
+        align: align,
+        justify: justify,
+        fontColor: fontColor,
+        fontStyle: fontStyle,
+        fontSize: fontSize,
+        duration: durationInFrames,
+      }
+  );
+
   const getDurationInFrames = (vc) => {
     let duration = 0;
     if (vc) {
@@ -64,19 +78,7 @@ const RemotionDemo = () => {
     getDurationInFrames(videoConfig);
   }, [...videoConfig]);
 
-  const { renderMedia, progress, status, price, url, renderId } = useLambda(
-    "MyComp",
-    {
-      config: videoConfig,
-      font: font,
-      align: align,
-      justify: justify,
-      fontColor: fontColor,
-      fontStyle: fontStyle,
-      fontSize: fontSize,
-      duration: durationInFrames,
-    }
-  );
+
 
   useEffect(() => {
     setVideoConfig([...getVideos()]);

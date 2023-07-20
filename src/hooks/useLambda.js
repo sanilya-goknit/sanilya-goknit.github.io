@@ -3,7 +3,7 @@ import { getProgress } from "../lambda/getProgress";
 import { postMedia } from "../lambda/postMedia";
 import { postStill } from "../lambda/postStill";
 
-export const useLambda = (id, inputProps, refreshInterval = 8000) => {
+export const useLambda = (id, inputProps, refreshInterval = 5000) => {
   const [progress, setProgress] = useState();
   const [status, setStatus] = useState();
   const [type, setType] = useState();
@@ -43,23 +43,32 @@ export const useLambda = (id, inputProps, refreshInterval = 8000) => {
     setStatus("rendering");
     setUrl(getUrl(result.renderId));
   };
+
   useEffect(() => {
     if (status === "rendering" && renderId && type === "media") {
       const interval = setInterval(async () => {
         try {
           const result = await getProgress(renderId);
+          console.log(result);
           if (!result) return setStatus("error");
-          if (result.fatalErrorEncountered) setStatus("error");
+          if (result.fatalErrorEncountered) {
+            setStatus("error");
+            console.error(result);
+            throw new Error("ERROR");
+          }
+          if (result.errors) setStatus("error");
           setPrice(result.costs.accruedSoFar);
           if (result.done) setStatus("done");
           setProgress(status === "rendering" ? result.overallProgress : 1);
         } catch (e) {
+          console.log("ERRRRRRRRRRRR", e);
           console.error(e);
-            clearInterval(interval);
+          clearInterval(interval);
           setStatus("error");
         }
       }, refreshInterval);
       return () => {
+        console.log("UNMOUNT");
         clearInterval(interval);
       };
     }
